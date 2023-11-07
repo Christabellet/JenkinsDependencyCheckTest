@@ -11,7 +11,7 @@ pipeline {
 			steps {
 				script {
 					// First DependencyCheck step
-					dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+					dependencyCheck additionalArguments: '--format HTML --format XML --suppression suppression.xml', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
 
 					// Second DependencyCheck step
 					dependencyCheck additionalArguments: '''
