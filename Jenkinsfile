@@ -9,16 +9,23 @@ pipeline {
 
 		stage('OWASP DependencyCheck') {
 			steps {
-				dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
-				dependencyCheck additionalArguments: '''
-					-o './'
-					-s './'
-					-f 'ALL'
-                    --suppression suppression.xml
-					--prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
-					
+				script {
+					// First DependencyCheck step
+					dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+
+					// Second DependencyCheck step
+					dependencyCheck additionalArguments: '''
+						-o './'
+						-s './'
+						-f 'ALL'
+						--suppression suppression.xml
+						--prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+				}
+
+				// This is a separate step outside of the script block
 				dependencyCheckPublisher pattern: 'dependency-check-report.xml'
 			}
 		}
 	}
-}	
+}
+
